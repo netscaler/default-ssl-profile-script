@@ -1,48 +1,48 @@
-# defaul-ssl-profile-script
+# Tool to migrate the SSL configuration to the default SSL profile
+Tool for migrating and converting the NetScaler SSL configuration to the default SSL profile-specific configuration.
 
-Tool for migrating and converting NetScaler configuration to Enhanced SSL Profile-specific configuration.
+## Description
+When you enable the default SSL profile, the in-built default SSL profile is attached to SSL entities and the entire SSL configuration changes to the default settings. As a result, your custom settings are lost. Manually adding the missing entries to the configuration is a tedious task. This tool scans the existing NetScaler configuration file and creates custom profiles. The tool is available for Linux, Windows, and Mac operating systems.
 
-Description:
-=========
-When the default SSL Profile is enabled the in-built default SSL Profile gets attached to SSL entities and the entire SSL configuration changes to DEFAULT settings. This tool will scan the provided NetScaler configuration file and will generate the following commands and write them in a batch file.
+## Prerequisites
+The Linux/Windows/Mac device from where this script is run must support Python3. 
+You must save the configuration (ns.conf) before running the script.
+
+## Downloads
+
+### For Linux
+./SSLconfigConverter_linux
+
+### For Windows
+./SSLconfigConverter.exe
+
+### For Mac
+./SSLconfigConverter_mac
+
+## Procedure
+
+This script is interactive. When you run the command, some prompts appear. The first prompt is for information purposes only. Second, you are prompted to provide the latest NetScaler configuration file (ns.conf). Third, select YES if you want to provide the SSL profile name. Otherwise, the tool automatically provides a name. The output is a batch file. 
+
+When prompted to review the batch file, type YES to review or NO to exit. Copy the batch file to your NetScaler, enable the default profile, and run the batch command.
+
+The following messages/prompts appear when you run the script:
+
+SSL configuration converter tool helps convert the legacy NetScaler configuration to the default SSL profile configuration
+
+...
+>Provide the latest saved NetScaler configuration file (ns.conf):
 
 
-Execution:
-========
-The following command needs to be executed from the client machine where this tool is downloaded. It will generate the batch file having the SSL Profile-specific commands based on the Netscaler configuration. This batch file after evaluation can be batched on NetScaler after enabling the default Profile setting
+>Do you want to provide an SSL profile name (Yes/No):
+...
 
-For Linux
-=========
-> ./SSLconfigConverter_linux
+(The following prompt appears if you selected YES.)
+...
+>Type the SSL profile name:
+...
 
-For Windows
-===========
-> ./SSLconfigConverter.exe
+A batch file is created.
 
-For Mac
-=======
-> ./SSLconfigConverter_mac
-
-
-> 'SSL PROFILE MIGRATION TOOL WILL HELP CONVERT THE LEGACY NETSCALER ' CONFIGURATION TO ENHANCED SSL PROFILE CONFIGURATION') 
-                        --> General Information for Admin 
-
-> PROVIDE THE LATEST SAVED NETSCALER CONFIGURATION FILE 
-                        --> This is to provide the latest NetScaler configuration file path (ns.conf)
-
-> IF YOU WANT TO PROVIDE THE SSL PROFILE NAME (TYPE YES) OTHERWISE IF YOU WANT TOOL TO GENERATE THE NAME (TYPE NO) 
-                        --> 
-		       YES : Admin  to provide name of    SSL Profile
-                        NO :  Tool will generate the name of SSL Profile
-
-> The Output Batch File is created  
-                       --> This is the batch file with SSL Profile specific commands to be batched later after verifying the batch file and enabling the Default SSL Profile in NetScaler.
-
-> Do you want to review the batch file (Type YES or NO)
-                       --> 
-			YES : Tool will display the converted SSL Profile commands
-                        NO   : Tool will exit and the created batch file can be reviewed later by admin.
-
-Pre-requisites:
-===========
-> This script can be run from any Linux/Windows/Mac machine having the support of python3
+...
+>Do you want to review the batch file (YES/NO):
+...
