@@ -2,7 +2,9 @@
 Tool for migrating and converting the NetScaler SSL configuration to the default SSL profile-specific configuration.
 
 ## Description
-When you enable the default SSL profile, the in-built default SSL profile is attached to SSL entities and the entire SSL configuration changes to the default settings. As a result, your custom settings are lost. Manually adding the missing entries to the configuration is a tedious task. This tool scans the existing NetScaler configuration file and creates custom profiles. The tool is available for Linux, Windows, and Mac operating systems.
+When you enable the default SSL profile, the in-built default SSL profile is attached to SSL entities and the entire SSL configuration changes to the default settings. As a result, your custom settings are lost. Manually adding the missing entries to the configuration is a tedious task. This tool scans the existing NetScaler configuration file and creates custom profiles. The tool is available for Linux, Windows, and Mac operating systems. The following illustration shows the workflow of the SSL profile converter tool.
+
+![SSL profile tool converter wrokflow](/media/SSL_Profile_Convertor_Flow_Chart.png)
 
 ## Prerequisites
 The Linux/Windows/Mac device from where this script is run must support Python3. 
