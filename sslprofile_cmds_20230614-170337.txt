@@ -1,0 +1,825 @@
+
+#################### THIS BLOCK IS TO CREATE,MODIFY AND SET SAME SSL PROFILE ON SSL VSERVER WITH SAME SETTINGS #####################
+
+add ssl profile vs_profile_1
+
+unbind ssl profile vs_profile_1 -cipherName DEFAULT
+set ssl profile vs_profile_1 -denySSLReneg NO
+set ssl profile vs_profile_1 -quantumSize 16384
+set ssl profile vs_profile_1 -sslTriggerTimeout 150
+set ssl profile vs_profile_1 -sendCloseNotify NO
+set ssl profile vs_profile_1 -encryptTriggerPktCount 35
+set ssl profile vs_profile_1 -insertionEncoding UTF-8
+set ssl profile vs_profile_1 -pushFlag 1
+set ssl profile vs_profile_1 -SNIHTTPHostMatch STRICT
+set ssl profile vs_profile_1 -pushEncTriggerTimeout 2
+set ssl profile vs_profile_1 -dropReqWithNoHostHeader YES
+set ssl profile vs_profile_1 -clientAuth ENABLED -clientCert Optional
+set ssl profile vs_profile_1 -SNIEnable ENABLED
+set ssl profile vs_profile_1 -ocspStapling ENABLED
+set ssl profile vs_profile_1 -dh ENABLED -dhFile "certs/dh/dh2048.pem" -dhCount 1000
+set ssl profile vs_profile_1 -eRSA ENABLED -eRSACount 1000
+set ssl profile vs_profile_1 -sessReuse ENABLED -sessTimeout 200
+set ssl profile vs_profile_1 -cipherRedirect ENABLED
+set ssl profile vs_profile_1 -sslRedirect ENABLED
+set ssl profile vs_profile_1 -HSTS ENABLED -maxage 200000 -IncludeSubdomains YES -preload YES
+set ssl profile vs_profile_1 -ssl3 DISABLED
+set ssl profile vs_profile_1 -tls1 DISABLED
+set ssl profile vs_profile_1 -tls11 DISABLED
+set ssl profile vs_profile_1 -tls13 ENABLED
+set ssl profile vs_profile_1 -pushEncTrigger Ignore
+set ssl profile vs_profile_1 -sendCloseNotify NO
+set ssl profile vs_profile_1 -strictSigDigestCheck ENABLED
+set ssl profile vs_profile_1 -zeroRttEarlyData ENABLED
+set ssl profile vs_profile_1 -dheKeyExchangeWithPsk YES
+set ssl profile vs_profile_1 -tls13SessionTicketsPerAuthContext 10
+bind ssl profile vs_profile_1 -cipherName DEFAULT
+bind ssl profile vs_profile_1 -cipherName cg1
+bind ssl profile vs_profile_1 -cipherName cg2
+
+set ssl vserver v2 -sslprofile vs_profile_1
+set ssl vserver v3 -sslprofile vs_profile_1
+
+add ssl profile vs_profile_2
+
+set ssl profile vs_profile_2 -denySSLReneg NO
+set ssl profile vs_profile_2 -quantumSize 16384
+set ssl profile vs_profile_2 -sslTriggerTimeout 150
+set ssl profile vs_profile_2 -sendCloseNotify NO
+set ssl profile vs_profile_2 -encryptTriggerPktCount 35
+set ssl profile vs_profile_2 -insertionEncoding UTF-8
+set ssl profile vs_profile_2 -pushFlag 1
+set ssl profile vs_profile_2 -SNIHTTPHostMatch STRICT
+set ssl profile vs_profile_2 -pushEncTriggerTimeout 2
+set ssl profile vs_profile_2 -dropReqWithNoHostHeader YES
+set ssl profile vs_profile_2 -sessReuse DISABLED
+set ssl profile vs_profile_2 -sendCloseNotify NO
+
+set ssl vserver v10 -sslprofile vs_profile_2
+set ssl profile ns_default_ssl_profile_frontend -denySSLReneg NO
+set ssl profile ns_default_ssl_profile_frontend -quantumSize 16384
+set ssl profile ns_default_ssl_profile_frontend -sslTriggerTimeout 150
+set ssl profile ns_default_ssl_profile_frontend -sendCloseNotify NO
+set ssl profile ns_default_ssl_profile_frontend -encryptTriggerPktCount 35
+set ssl profile ns_default_ssl_profile_frontend -insertionEncoding UTF-8
+set ssl profile ns_default_ssl_profile_frontend -pushFlag 1
+set ssl profile ns_default_ssl_profile_frontend -SNIHTTPHostMatch STRICT
+set ssl profile ns_default_ssl_profile_frontend -pushEncTriggerTimeout 2
+set ssl profile ns_default_ssl_profile_frontend -dropReqWithNoHostHeader YES
+
+################################################ THE SSL VSERVER BLOCK ENDS HERE #######################################################
+
+
+#################### THIS BLOCK IS TO CREATE,MODIFY AND SET SAME SSL PROFILE ON SSL SERVICE WITH SAME SETTINGS #####################
+
+add ssl profile svc_profile_1 -sslProfileType BackEnd
+
+unbind ssl profile svc_profile_1 -cipherName DEFAULT_BACKEND
+set ssl profile svc_profile_1 -denySSLReneg NO
+set ssl profile svc_profile_1 -quantumSize 16384
+set ssl profile svc_profile_1 -sslTriggerTimeout 150
+set ssl profile svc_profile_1 -sendCloseNotify NO
+set ssl profile svc_profile_1 -encryptTriggerPktCount 35
+set ssl profile svc_profile_1 -insertionEncoding UTF-8
+set ssl profile svc_profile_1 -pushFlag 1
+set ssl profile svc_profile_1 -SNIHTTPHostMatch STRICT
+set ssl profile svc_profile_1 -pushEncTriggerTimeout 2
+set ssl profile svc_profile_1 -tls12 DISABLED
+set ssl profile svc_profile_1 -sendCloseNotify NO
+set ssl profile svc_profile_1 -sessReuse DISABLED
+bind ssl profile svc_profile_1 -cipherName DEFAULT_BACKEND
+bind ssl profile svc_profile_1 -cipherName cg1
+bind ssl profile svc_profile_1 -cipherName TLS1-ECDHE-RSA-AES128-SHA
+bind ssl profile svc_profile_1 -cipherName TLS1.2-ECDHE-RSA-AES128-GCM-SHA256
+
+set ssl service svc9 -sslprofile svc_profile_1
+set ssl service svc8 -sslprofile svc_profile_1
+set ssl service svc7 -sslprofile svc_profile_1
+
+add ssl profile svc_profile_2 -sslProfileType BackEnd
+
+unbind ssl profile svc_profile_2 -cipherName DEFAULT_BACKEND
+set ssl profile svc_profile_2 -denySSLReneg NO
+set ssl profile svc_profile_2 -quantumSize 16384
+set ssl profile svc_profile_2 -sslTriggerTimeout 150
+set ssl profile svc_profile_2 -sendCloseNotify NO
+set ssl profile svc_profile_2 -encryptTriggerPktCount 35
+set ssl profile svc_profile_2 -insertionEncoding UTF-8
+set ssl profile svc_profile_2 -pushFlag 1
+set ssl profile svc_profile_2 -SNIHTTPHostMatch STRICT
+set ssl profile svc_profile_2 -pushEncTriggerTimeout 2
+set ssl profile svc_profile_2 -serverAuth ENABLED -commonName abc.com
+set ssl profile svc_profile_2 -SNIEnable ENABLED
+set ssl profile svc_profile_2 -ssl3 DISABLED
+set ssl profile svc_profile_2 -tls1 DISABLED
+set ssl profile svc_profile_2 -tls11 DISABLED
+set ssl profile svc_profile_2 -sendCloseNotify NO
+set ssl profile svc_profile_2 -sessReuse ENABLED
+set ssl profile svc_profile_2 -strictSigDigestCheck ENABLED
+bind ssl profile svc_profile_2 -cipherName DEFAULT_BACKEND
+bind ssl profile svc_profile_2 -cipherName cg1
+bind ssl profile svc_profile_2 -cipherName cg2
+
+set ssl service svc6 -sslprofile svc_profile_2
+set ssl service svc5 -sslprofile svc_profile_2
+set ssl service svc4 -sslprofile svc_profile_2
+set ssl profile ns_default_ssl_profile_backend -denySSLReneg NO
+set ssl profile ns_default_ssl_profile_backend -quantumSize 16384
+set ssl profile ns_default_ssl_profile_backend -sslTriggerTimeout 150
+set ssl profile ns_default_ssl_profile_backend -sendCloseNotify NO
+set ssl profile ns_default_ssl_profile_backend -encryptTriggerPktCount 35
+set ssl profile ns_default_ssl_profile_backend -insertionEncoding UTF-8
+set ssl profile ns_default_ssl_profile_backend -pushFlag 1
+set ssl profile ns_default_ssl_profile_backend -SNIHTTPHostMatch STRICT
+set ssl profile ns_default_ssl_profile_backend -pushEncTriggerTimeout 2
+
+################################################ THE SSL SERVICE BLOCK ENDS HERE #######################################################
+
+
+#################### THIS BLOCK IS TO CREATE,MODIFY AND SET SAME SSL PROFILE ON SSL SERVICEGROUP WITH SAME SETTINGS #####################
+
+add ssl profile sg_profile_1 -sslProfileType BackEnd
+
+set ssl profile sg_profile_1 -denySSLReneg NO
+set ssl profile sg_profile_1 -quantumSize 16384
+set ssl profile sg_profile_1 -sslTriggerTimeout 150
+set ssl profile sg_profile_1 -sendCloseNotify NO
+set ssl profile sg_profile_1 -encryptTriggerPktCount 35
+set ssl profile sg_profile_1 -insertionEncoding UTF-8
+set ssl profile sg_profile_1 -pushFlag 1
+set ssl profile sg_profile_1 -SNIHTTPHostMatch STRICT
+set ssl profile sg_profile_1 -pushEncTriggerTimeout 2
+
+set ssl serviceGroup sg1 -sslprofile sg_profile_1
+set ssl serviceGroup sg3 -sslprofile sg_profile_1
+set ssl serviceGroup sg2 -sslprofile sg_profile_1
+
+add ssl profile sg_profile_2 -sslProfileType BackEnd
+
+set ssl profile sg_profile_2 -denySSLReneg NO
+set ssl profile sg_profile_2 -quantumSize 16384
+set ssl profile sg_profile_2 -sslTriggerTimeout 150
+set ssl profile sg_profile_2 -sendCloseNotify NO
+set ssl profile sg_profile_2 -encryptTriggerPktCount 35
+set ssl profile sg_profile_2 -insertionEncoding UTF-8
+set ssl profile sg_profile_2 -pushFlag 1
+set ssl profile sg_profile_2 -SNIHTTPHostMatch STRICT
+set ssl profile sg_profile_2 -pushEncTriggerTimeout 2
+set ssl profile sg_profile_2 -serverAuth ENABLED
+set ssl profile sg_profile_2 -sendCloseNotify NO
+
+set ssl serviceGroup sg10 -sslprofile sg_profile_2
+
+add ssl profile sg_profile_3 -sslProfileType BackEnd
+
+unbind ssl profile sg_profile_3 -cipherName DEFAULT_BACKEND
+set ssl profile sg_profile_3 -denySSLReneg NO
+set ssl profile sg_profile_3 -quantumSize 16384
+set ssl profile sg_profile_3 -sslTriggerTimeout 150
+set ssl profile sg_profile_3 -sendCloseNotify NO
+set ssl profile sg_profile_3 -encryptTriggerPktCount 35
+set ssl profile sg_profile_3 -insertionEncoding UTF-8
+set ssl profile sg_profile_3 -pushFlag 1
+set ssl profile sg_profile_3 -SNIHTTPHostMatch STRICT
+set ssl profile sg_profile_3 -pushEncTriggerTimeout 2
+set ssl profile sg_profile_3 -tls12 DISABLED
+set ssl profile sg_profile_3 -sendCloseNotify NO
+set ssl profile sg_profile_3 -sessReuse DISABLED
+bind ssl profile sg_profile_3 -cipherName DEFAULT_BACKEND
+bind ssl profile sg_profile_3 -cipherName cg1
+bind ssl profile sg_profile_3 -cipherName TLS1.2-ECDHE-RSA-AES128-GCM-SHA256
+bind ssl profile sg_profile_3 -cipherName TLS1-ECDHE-RSA-AES128-SHA
+
+set ssl serviceGroup sg9 -sslprofile sg_profile_3
+set ssl serviceGroup sg8 -sslprofile sg_profile_3
+set ssl serviceGroup sg7 -sslprofile sg_profile_3
+
+add ssl profile sg_profile_4 -sslProfileType BackEnd
+
+unbind ssl profile sg_profile_4 -cipherName DEFAULT_BACKEND
+set ssl profile sg_profile_4 -denySSLReneg NO
+set ssl profile sg_profile_4 -quantumSize 16384
+set ssl profile sg_profile_4 -sslTriggerTimeout 150
+set ssl profile sg_profile_4 -sendCloseNotify NO
+set ssl profile sg_profile_4 -encryptTriggerPktCount 35
+set ssl profile sg_profile_4 -insertionEncoding UTF-8
+set ssl profile sg_profile_4 -pushFlag 1
+set ssl profile sg_profile_4 -SNIHTTPHostMatch STRICT
+set ssl profile sg_profile_4 -pushEncTriggerTimeout 2
+set ssl profile sg_profile_4 -serverAuth ENABLED -commonName abc.com
+set ssl profile sg_profile_4 -SNIEnable ENABLED
+set ssl profile sg_profile_4 -ssl3 DISABLED
+set ssl profile sg_profile_4 -tls1 DISABLED
+set ssl profile sg_profile_4 -tls11 DISABLED
+set ssl profile sg_profile_4 -sendCloseNotify NO
+set ssl profile sg_profile_4 -sessReuse ENABLED -sessTimeout 100
+set ssl profile sg_profile_4 -strictSigDigestCheck ENABLED
+bind ssl profile sg_profile_4 -cipherName DEFAULT_BACKEND
+bind ssl profile sg_profile_4 -cipherName cg1
+bind ssl profile sg_profile_4 -cipherName cg2
+
+set ssl serviceGroup sg6 -sslprofile sg_profile_4
+set ssl serviceGroup sg5 -sslprofile sg_profile_4
+set ssl serviceGroup sg4 -sslprofile sg_profile_4
+
+################################################ THE SSL SERVICEGROUP BLOCK ENDS HERE #######################################################
+
+
+#################### THIS BLOCK IS TO CREATE,MODIFY AND SET SAME SSL PROFILE ON SSL INTERNAL SERVICE WITH SAME SETTINGS #####################
+
+add ssl profile internalsvc_profile_1
+
+set ssl profile internalsvc_profile_1 -denySSLReneg NO
+set ssl profile internalsvc_profile_1 -quantumSize 16384
+set ssl profile internalsvc_profile_1 -sslTriggerTimeout 150
+set ssl profile internalsvc_profile_1 -sendCloseNotify NO
+set ssl profile internalsvc_profile_1 -encryptTriggerPktCount 35
+set ssl profile internalsvc_profile_1 -insertionEncoding UTF-8
+set ssl profile internalsvc_profile_1 -pushFlag 1
+set ssl profile internalsvc_profile_1 -SNIHTTPHostMatch STRICT
+set ssl profile internalsvc_profile_1 -pushEncTriggerTimeout 2
+set ssl profile internalsvc_profile_1 -eRSA ENABLED
+set ssl profile internalsvc_profile_1 -sessReuse DISABLED
+set ssl profile internalsvc_profile_1 -ssl3 DISABLED
+set ssl profile internalsvc_profile_1 -tls1 DISABLED
+set ssl profile internalsvc_profile_1 -tls11 DISABLED
+
+set ssl service nsrnatsip-127.0.0.1-5061 -sslprofile internalsvc_profile_1
+set ssl service nskrpcs-127.0.0.1-3009 -sslprofile internalsvc_profile_1
+set ssl service nsrpcs-::1l-3008 -sslprofile internalsvc_profile_1
+
+add ssl profile internalsvc_profile_2
+
+unbind ssl profile internalsvc_profile_2 -cipherName DEFAULT
+set ssl profile internalsvc_profile_2 -denySSLReneg NO
+set ssl profile internalsvc_profile_2 -quantumSize 16384
+set ssl profile internalsvc_profile_2 -sslTriggerTimeout 150
+set ssl profile internalsvc_profile_2 -sendCloseNotify NO
+set ssl profile internalsvc_profile_2 -encryptTriggerPktCount 35
+set ssl profile internalsvc_profile_2 -insertionEncoding UTF-8
+set ssl profile internalsvc_profile_2 -pushFlag 1
+set ssl profile internalsvc_profile_2 -SNIHTTPHostMatch STRICT
+set ssl profile internalsvc_profile_2 -pushEncTriggerTimeout 2
+set ssl profile internalsvc_profile_2 -eRSA ENABLED
+set ssl profile internalsvc_profile_2 -sessReuse DISABLED
+set ssl profile internalsvc_profile_2 -ssl3 DISABLED
+set ssl profile internalsvc_profile_2 -tls1 DISABLED
+set ssl profile internalsvc_profile_2 -tls11 DISABLED
+set ssl profile internalsvc_profile_2 -sendCloseNotify NO
+set ssl profile internalsvc_profile_2 -strictSigDigestCheck ENABLED
+bind ssl profile internalsvc_profile_2 -cipherName DEFAULT
+bind ssl profile internalsvc_profile_2 -cipherName cg1
+bind ssl profile internalsvc_profile_2 -cipherName TLS1-ECDHE-RSA-AES256-SHA
+
+set ssl service nshttps-127.0.0.1-443 -sslprofile internalsvc_profile_2
+set ssl service nsrpcs-127.0.0.1-3008 -sslprofile internalsvc_profile_2
+
+add ssl profile internalsvc_profile_3
+
+unbind ssl profile internalsvc_profile_3 -cipherName DEFAULT
+set ssl profile internalsvc_profile_3 -denySSLReneg NO
+set ssl profile internalsvc_profile_3 -quantumSize 16384
+set ssl profile internalsvc_profile_3 -sslTriggerTimeout 150
+set ssl profile internalsvc_profile_3 -sendCloseNotify NO
+set ssl profile internalsvc_profile_3 -encryptTriggerPktCount 35
+set ssl profile internalsvc_profile_3 -insertionEncoding UTF-8
+set ssl profile internalsvc_profile_3 -pushFlag 1
+set ssl profile internalsvc_profile_3 -SNIHTTPHostMatch STRICT
+set ssl profile internalsvc_profile_3 -pushEncTriggerTimeout 2
+bind ssl profile internalsvc_profile_3 -cipherName cg1
+bind ssl profile internalsvc_profile_3 -cipherName cg2
+
+set ssl service nshttps-::1l-443 -sslprofile internalsvc_profile_3
+
+################################################ THE SSL INTERNAL SERVICE BLOCK ENDS HERE #####################################################
+
+
+##################### THIS BLOCK IS TO CREATE,MODIFY AND SET SAME SSL PROFILE ON SSL SERVICE TRANSPARENT WITH SAME SETTINGS #####################
+
+add ssl profile svc_transparent_profile_1 
+
+set ssl profile svc_transparent_profile_1 -denySSLReneg NO
+set ssl profile svc_transparent_profile_1 -quantumSize 16384
+set ssl profile svc_transparent_profile_1 -sslTriggerTimeout 150
+set ssl profile svc_transparent_profile_1 -sendCloseNotify NO
+set ssl profile svc_transparent_profile_1 -encryptTriggerPktCount 35
+set ssl profile svc_transparent_profile_1 -insertionEncoding UTF-8
+set ssl profile svc_transparent_profile_1 -pushFlag 1
+set ssl profile svc_transparent_profile_1 -SNIHTTPHostMatch STRICT
+set ssl profile svc_transparent_profile_1 -pushEncTriggerTimeout 2
+set ssl profile svc_transparent_profile_1 -dropReqWithNoHostHeader YES
+set ssl profile svc_transparent_profile_1 -eRSA ENABLED
+set ssl profile svc_transparent_profile_1 -sessReuse ENABLED -sessTimeout 120
+set ssl profile svc_transparent_profile_1 -sendCloseNotify NO
+
+set ssl service trans_svc10 -sslprofile svc_transparent_profile_1
+set ssl vserver trans_svc3 -sslprofile svc_transparent_profile_1
+set ssl vserver trans_svc2 -sslprofile svc_transparent_profile_1
+
+add ssl profile svc_transparent_profile_2 
+
+unbind ssl profile svc_transparent_profile_2 -eccCurveName ALL
+set ssl profile svc_transparent_profile_2 -denySSLReneg NO
+set ssl profile svc_transparent_profile_2 -quantumSize 16384
+set ssl profile svc_transparent_profile_2 -sslTriggerTimeout 150
+set ssl profile svc_transparent_profile_2 -sendCloseNotify NO
+set ssl profile svc_transparent_profile_2 -encryptTriggerPktCount 35
+set ssl profile svc_transparent_profile_2 -insertionEncoding UTF-8
+set ssl profile svc_transparent_profile_2 -pushFlag 1
+set ssl profile svc_transparent_profile_2 -SNIHTTPHostMatch STRICT
+set ssl profile svc_transparent_profile_2 -pushEncTriggerTimeout 2
+set ssl profile svc_transparent_profile_2 -dropReqWithNoHostHeader YES
+set ssl profile svc_transparent_profile_2 -eRSA ENABLED
+set ssl profile svc_transparent_profile_2 -sessReuse ENABLED -sessTimeout 120
+set ssl profile svc_transparent_profile_2 -sendCloseNotify NO
+
+set ssl service trans_svc9 -sslprofile svc_transparent_profile_2
+
+add ssl profile svc_transparent_profile_3 
+
+unbind ssl profile svc_transparent_profile_3 -cipherName DEFAULT
+unbind ssl profile svc_transparent_profile_3 -eccCurveName ALL
+set ssl profile svc_transparent_profile_3 -denySSLReneg NO
+set ssl profile svc_transparent_profile_3 -quantumSize 16384
+set ssl profile svc_transparent_profile_3 -sslTriggerTimeout 150
+set ssl profile svc_transparent_profile_3 -sendCloseNotify NO
+set ssl profile svc_transparent_profile_3 -encryptTriggerPktCount 35
+set ssl profile svc_transparent_profile_3 -insertionEncoding UTF-8
+set ssl profile svc_transparent_profile_3 -pushFlag 1
+set ssl profile svc_transparent_profile_3 -SNIHTTPHostMatch STRICT
+set ssl profile svc_transparent_profile_3 -pushEncTriggerTimeout 2
+set ssl profile svc_transparent_profile_3 -dropReqWithNoHostHeader YES
+set ssl profile svc_transparent_profile_3 -eRSA ENABLED
+set ssl profile svc_transparent_profile_3 -sessReuse ENABLED -sessTimeout 120
+set ssl profile svc_transparent_profile_3 -sendCloseNotify NO
+bind ssl profile svc_transparent_profile_3 -cipherName cg1
+bind ssl profile svc_transparent_profile_3 -eccCurveName P_256
+bind ssl profile svc_transparent_profile_3 -eccCurveName P_384
+bind ssl profile svc_transparent_profile_3 -eccCurveName P_521
+
+set ssl service trans_svc8 -sslprofile svc_transparent_profile_3
+
+add ssl profile svc_transparent_profile_4 
+
+unbind ssl profile svc_transparent_profile_4 -cipherName DEFAULT
+set ssl profile svc_transparent_profile_4 -denySSLReneg NO
+set ssl profile svc_transparent_profile_4 -quantumSize 16384
+set ssl profile svc_transparent_profile_4 -sslTriggerTimeout 150
+set ssl profile svc_transparent_profile_4 -sendCloseNotify NO
+set ssl profile svc_transparent_profile_4 -encryptTriggerPktCount 35
+set ssl profile svc_transparent_profile_4 -insertionEncoding UTF-8
+set ssl profile svc_transparent_profile_4 -pushFlag 1
+set ssl profile svc_transparent_profile_4 -SNIHTTPHostMatch STRICT
+set ssl profile svc_transparent_profile_4 -pushEncTriggerTimeout 2
+set ssl profile svc_transparent_profile_4 -dropReqWithNoHostHeader YES
+set ssl profile svc_transparent_profile_4 -eRSA ENABLED
+set ssl profile svc_transparent_profile_4 -sessReuse ENABLED -sessTimeout 120
+set ssl profile svc_transparent_profile_4 -sendCloseNotify NO
+bind ssl profile svc_transparent_profile_4 -cipherName DEFAULT
+bind ssl profile svc_transparent_profile_4 -cipherName cg1
+bind ssl profile svc_transparent_profile_4 -cipherName cg2
+
+set ssl service trans_svc7 -sslprofile svc_transparent_profile_4
+
+add ssl profile svc_transparent_profile_5 
+
+set ssl profile svc_transparent_profile_5 -denySSLReneg NO
+set ssl profile svc_transparent_profile_5 -quantumSize 16384
+set ssl profile svc_transparent_profile_5 -sslTriggerTimeout 150
+set ssl profile svc_transparent_profile_5 -sendCloseNotify NO
+set ssl profile svc_transparent_profile_5 -encryptTriggerPktCount 35
+set ssl profile svc_transparent_profile_5 -insertionEncoding UTF-8
+set ssl profile svc_transparent_profile_5 -pushFlag 1
+set ssl profile svc_transparent_profile_5 -SNIHTTPHostMatch STRICT
+set ssl profile svc_transparent_profile_5 -pushEncTriggerTimeout 2
+set ssl profile svc_transparent_profile_5 -dropReqWithNoHostHeader YES
+set ssl profile svc_transparent_profile_5 -clientAuth ENABLED -clientCert Optional
+set ssl profile svc_transparent_profile_5 -SNIEnable ENABLED
+set ssl profile svc_transparent_profile_5 -ocspStapling ENABLED
+set ssl profile svc_transparent_profile_5 -dh ENABLED -dhFile "certs/dh/dh2048.pem" -dhCount 1000
+set ssl profile svc_transparent_profile_5 -eRSA ENABLED -eRSACount 1000
+set ssl profile svc_transparent_profile_5 -sessReuse ENABLED -sessTimeout 200
+set ssl profile svc_transparent_profile_5 -cipherRedirect ENABLED
+set ssl profile svc_transparent_profile_5 -sslRedirect ENABLED
+set ssl profile svc_transparent_profile_5 -ssl3 DISABLED
+set ssl profile svc_transparent_profile_5 -tls1 DISABLED
+set ssl profile svc_transparent_profile_5 -tls11 DISABLED
+set ssl profile svc_transparent_profile_5 -tls13 ENABLED
+set ssl profile svc_transparent_profile_5 -pushEncTrigger Ignore
+set ssl profile svc_transparent_profile_5 -sendCloseNotify NO
+set ssl profile svc_transparent_profile_5 -strictSigDigestCheck ENABLED
+
+set ssl service trans_svc6 -sslprofile svc_transparent_profile_5
+set ssl vserver trans_svc5 -sslprofile svc_transparent_profile_5
+set ssl vserver trans_svc4 -sslprofile svc_transparent_profile_5
+
+################################################ THE SSL SERVICE TRANSPARENT BLOCK ENDS HERE #######################################################
+
+
+################ THIS BLOCK IS TO CREATE,MODIFY AND SET SAME SSL PROFILE ON SSL SERVICE GLOBAL TRANSPARENT WITH SAME SETTINGS ##############
+
+add ssl profile vs_global_transparent_profile_1
+
+unbind ssl profile vs_global_transparent_profile_1 -cipherName DEFAULT
+set ssl profile vs_global_transparent_profile_1 -denySSLReneg NO
+set ssl profile vs_global_transparent_profile_1 -quantumSize 16384
+set ssl profile vs_global_transparent_profile_1 -sslTriggerTimeout 150
+set ssl profile vs_global_transparent_profile_1 -sendCloseNotify NO
+set ssl profile vs_global_transparent_profile_1 -encryptTriggerPktCount 35
+set ssl profile vs_global_transparent_profile_1 -insertionEncoding UTF-8
+set ssl profile vs_global_transparent_profile_1 -pushFlag 1
+set ssl profile vs_global_transparent_profile_1 -SNIHTTPHostMatch STRICT
+set ssl profile vs_global_transparent_profile_1 -pushEncTriggerTimeout 2
+set ssl profile vs_global_transparent_profile_1 -dropReqWithNoHostHeader YES
+set ssl profile vs_global_transparent_profile_1 -clientAuth ENABLED -clientCert Optional
+set ssl profile vs_global_transparent_profile_1 -SNIEnable ENABLED
+set ssl profile vs_global_transparent_profile_1 -ocspStapling ENABLED
+set ssl profile vs_global_transparent_profile_1 -dh ENABLED -dhFile "certs/dh/dh2048.pem" -dhCount 1000
+set ssl profile vs_global_transparent_profile_1 -eRSA ENABLED -eRSACount 1000
+set ssl profile vs_global_transparent_profile_1 -sessReuse ENABLED -sessTimeout 200
+set ssl profile vs_global_transparent_profile_1 -cipherRedirect ENABLED
+set ssl profile vs_global_transparent_profile_1 -clearTextPort 80
+set ssl profile vs_global_transparent_profile_1 -sslRedirect ENABLED
+set ssl profile vs_global_transparent_profile_1 -HSTS ENABLED -maxage 200000 -IncludeSubdomains YES -preload YES
+set ssl profile vs_global_transparent_profile_1 -ssl3 DISABLED
+set ssl profile vs_global_transparent_profile_1 -tls1 DISABLED
+set ssl profile vs_global_transparent_profile_1 -tls11 DISABLED
+set ssl profile vs_global_transparent_profile_1 -tls13 ENABLED
+set ssl profile vs_global_transparent_profile_1 -pushEncTrigger Ignore
+set ssl profile vs_global_transparent_profile_1 -sendCloseNotify NO
+set ssl profile vs_global_transparent_profile_1 -strictSigDigestCheck ENABLED
+set ssl profile vs_global_transparent_profile_1 -zeroRttEarlyData ENABLED
+set ssl profile vs_global_transparent_profile_1 -dheKeyExchangeWithPsk YES
+set ssl profile vs_global_transparent_profile_1 -tls13SessionTicketsPerAuthContext 10
+bind ssl profile vs_global_transparent_profile_1 -cipherName DEFAULT
+bind ssl profile vs_global_transparent_profile_1 -cipherName cg1
+bind ssl profile vs_global_transparent_profile_1 -cipherName cg2
+
+set ssl vserver v_gt1 -sslprofile vs_global_transparent_profile_1
+
+
+add ssl profile vs_global_transparent_profile_2
+
+set ssl profile vs_global_transparent_profile_2 -denySSLReneg NO
+set ssl profile vs_global_transparent_profile_2 -quantumSize 16384
+set ssl profile vs_global_transparent_profile_2 -sslTriggerTimeout 150
+set ssl profile vs_global_transparent_profile_2 -sendCloseNotify NO
+set ssl profile vs_global_transparent_profile_2 -encryptTriggerPktCount 35
+set ssl profile vs_global_transparent_profile_2 -insertionEncoding UTF-8
+set ssl profile vs_global_transparent_profile_2 -pushFlag 1
+set ssl profile vs_global_transparent_profile_2 -SNIHTTPHostMatch STRICT
+set ssl profile vs_global_transparent_profile_2 -pushEncTriggerTimeout 2
+set ssl profile vs_global_transparent_profile_2 -dropReqWithNoHostHeader YES
+set ssl profile vs_global_transparent_profile_2 -sendCloseNotify NO
+
+set ssl vserver v-gt2 -sslprofile vs_global_transparent_profile_2
+
+set ssl profile ns_default_ssl_profile_frontend -denySSLReneg NO
+set ssl profile ns_default_ssl_profile_frontend -quantumSize 16384
+set ssl profile ns_default_ssl_profile_frontend -sslTriggerTimeout 150
+set ssl profile ns_default_ssl_profile_frontend -sendCloseNotify NO
+set ssl profile ns_default_ssl_profile_frontend -encryptTriggerPktCount 35
+set ssl profile ns_default_ssl_profile_frontend -insertionEncoding UTF-8
+set ssl profile ns_default_ssl_profile_frontend -pushFlag 1
+set ssl profile ns_default_ssl_profile_frontend -SNIHTTPHostMatch STRICT
+set ssl profile ns_default_ssl_profile_frontend -pushEncTriggerTimeout 2
+set ssl profile ns_default_ssl_profile_frontend -dropReqWithNoHostHeader YES
+
+################################################ SSL GLOBAL TRANSPARENT BLOCK ENDS HERE #######################################################
+
+
+################ THIS BLOCK IS TO CREATE,MODIFY AND SET SAME SSL PROFILE ON SSL VSERVER HAVING LEGACY SSL PROFILE WITH SAME SETTINGS ################
+
+add ssl profile ssl_profile_vserver_v11
+
+unbind ssl profile ssl_profile_vserver_v11 -cipherName DEFAULT
+
+unbind ssl profile ssl_profile_vserver_v11 -eccCurveName ALL
+set ssl profile ssl_profile_vserver_v11 -denySSLReneg NO
+set ssl profile ssl_profile_vserver_v11 -quantumSize 16384
+set ssl profile ssl_profile_vserver_v11 -sslTriggerTimeout 150
+set ssl profile ssl_profile_vserver_v11 -sendCloseNotify NO
+set ssl profile ssl_profile_vserver_v11 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_vserver_v11 -insertionEncoding UTF-8
+set ssl profile ssl_profile_vserver_v11 -pushFlag 1
+set ssl profile ssl_profile_vserver_v11 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_vserver_v11 -pushEncTriggerTimeout 2
+set ssl profile ssl_profile_vserver_v11 -dropReqWithNoHostHeader YES
+
+set ssl profile ssl_profile_vserver_v11  -dhCount 1000 -dh ENABLED -dhFile "certs/dh/dh2048.pem" -eRSA ENABLED -eRSACount 1000 -sessReuse ENABLED -sessTimeout 200 -cipherRedirect ENABLED -cipherURL "http://abc.com" -clientAuth ENABLED -clientCert Optional -sslRedirect ENABLED -tls1 DISABLED -tls11 DISABLED -tls13 ENABLED -SNIEnable ENABLED -ocspStapling ENABLED -pushEncTrigger Ignore -sendCloseNotify NO -HSTS ENABLED -maxage 200000 -IncludeSubdomains YES -preload YES -zeroRttEarlyData ENABLED -tls13SessionTicketsPerAuthContext 10 -dheKeyExchangeWithPsk YES
+
+bind ssl profile  ssl_profile_vserver_v11 -cipherName cg1
+bind ssl profile  ssl_profile_vserver_v11 -cipherName cg2
+bind ssl profile  ssl_profile_vserver_v11 -eccCurveName P_256
+bind ssl profile  ssl_profile_vserver_v11 -eccCurveName P_384
+bind ssl profile  ssl_profile_vserver_v11 -eccCurveName P_224
+
+set ssl vserver v11 -sslprofile ssl_profile_vserver_v11
+
+add ssl profile ssl_profile_vserver_v12
+
+unbind ssl profile ssl_profile_vserver_v12 -cipherName DEFAULT
+set ssl profile ssl_profile_vserver_v12 -denySSLReneg NO
+set ssl profile ssl_profile_vserver_v12 -quantumSize 16384
+set ssl profile ssl_profile_vserver_v12 -sslTriggerTimeout 150
+set ssl profile ssl_profile_vserver_v12 -sendCloseNotify NO
+set ssl profile ssl_profile_vserver_v12 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_vserver_v12 -insertionEncoding UTF-8
+set ssl profile ssl_profile_vserver_v12 -pushFlag 1
+set ssl profile ssl_profile_vserver_v12 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_vserver_v12 -pushEncTriggerTimeout 2
+set ssl profile ssl_profile_vserver_v12 -dropReqWithNoHostHeader YES
+
+set ssl profile ssl_profile_vserver_v12  -dhCount 1000 -dh ENABLED -dhFile "certs/dh/dh2048.pem" -eRSA ENABLED -eRSACount 1000 -sessReuse ENABLED -sessTimeout 200 -cipherRedirect ENABLED -cipherURL "http://abc.com" -clientAuth ENABLED -clientCert Optional -sslRedirect ENABLED -tls1 DISABLED -tls11 DISABLED -tls13 ENABLED -SNIEnable ENABLED -ocspStapling ENABLED -pushEncTrigger Ignore -sendCloseNotify NO -HSTS ENABLED -maxage 200000 -IncludeSubdomains YES -preload YES -zeroRttEarlyData ENABLED -tls13SessionTicketsPerAuthContext 10 -dheKeyExchangeWithPsk YES
+
+bind ssl profile  ssl_profile_vserver_v12 -cipherName DEFAULT
+bind ssl profile  ssl_profile_vserver_v12 -cipherName cg1
+
+set ssl vserver v12 -sslprofile ssl_profile_vserver_v12
+
+add ssl profile ssl_profile_vserver_v13
+set ssl profile ssl_profile_vserver_v13 -denySSLReneg NO
+set ssl profile ssl_profile_vserver_v13 -quantumSize 16384
+set ssl profile ssl_profile_vserver_v13 -sslTriggerTimeout 150
+set ssl profile ssl_profile_vserver_v13 -sendCloseNotify NO
+set ssl profile ssl_profile_vserver_v13 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_vserver_v13 -insertionEncoding UTF-8
+set ssl profile ssl_profile_vserver_v13 -pushFlag 1
+set ssl profile ssl_profile_vserver_v13 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_vserver_v13 -pushEncTriggerTimeout 2
+set ssl profile ssl_profile_vserver_v13 -dropReqWithNoHostHeader YES
+
+set ssl profile ssl_profile_vserver_v13  -sessReuse ENABLED -sessTimeout 120
+
+
+set ssl vserver v13 -sslprofile ssl_profile_vserver_v13
+set ssl vserver v14 -sslprofile ssl_profile_vserver_v13
+
+add ssl profile ssl_profile_vserver_v-gt3
+
+unbind ssl profile ssl_profile_vserver_v-gt3 -cipherName DEFAULT
+
+unbind ssl profile ssl_profile_vserver_v-gt3 -eccCurveName ALL
+set ssl profile ssl_profile_vserver_v-gt3 -denySSLReneg NO
+set ssl profile ssl_profile_vserver_v-gt3 -quantumSize 16384
+set ssl profile ssl_profile_vserver_v-gt3 -sslTriggerTimeout 150
+set ssl profile ssl_profile_vserver_v-gt3 -sendCloseNotify NO
+set ssl profile ssl_profile_vserver_v-gt3 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_vserver_v-gt3 -insertionEncoding UTF-8
+set ssl profile ssl_profile_vserver_v-gt3 -pushFlag 1
+set ssl profile ssl_profile_vserver_v-gt3 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_vserver_v-gt3 -pushEncTriggerTimeout 2
+set ssl profile ssl_profile_vserver_v-gt3 -dropReqWithNoHostHeader YES
+
+set ssl profile ssl_profile_vserver_v-gt3  -dhCount 1000 -dh ENABLED -dhFile "certs/dh/dh2048.pem" -eRSA ENABLED -eRSACount 1000 -sessReuse ENABLED -sessTimeout 200 -cipherRedirect ENABLED -clientAuth ENABLED -clientCert Optional -sslRedirect ENABLED -tls1 DISABLED -tls11 DISABLED -tls13 ENABLED -SNIEnable ENABLED -ocspStapling ENABLED -pushEncTrigger Ignore -sendCloseNotify NO -HSTS ENABLED -maxage 200000 -IncludeSubdomains YES -preload YES -zeroRttEarlyData ENABLED -tls13SessionTicketsPerAuthContext 10 -dheKeyExchangeWithPsk YES
+
+bind ssl profile  ssl_profile_vserver_v-gt3 -cipherName cg1
+bind ssl profile  ssl_profile_vserver_v-gt3 -eccCurveName P_224
+
+set ssl vserver v-gt3 -sslprofile ssl_profile_vserver_v-gt3
+
+################################################ THE SSL VSERVER WITH LEGACY PROFILE BLOCK ENDS HERE #######################################################
+
+
+############### THIS BLOCK IS TO CREATE,MODIFY AND SET SAME SSL PROFILE ON SSL SERVICE HAVING LEGACY SSL PROFILE WITH SAME SETTINGS ##############
+
+add ssl profile ssl_profile_service_svc14 -sslProfileType BackEnd
+set ssl profile ssl_profile_service_svc14 -denySSLReneg NO
+set ssl profile ssl_profile_service_svc14 -quantumSize 16384
+set ssl profile ssl_profile_service_svc14 -sslTriggerTimeout 150
+set ssl profile ssl_profile_service_svc14 -sendCloseNotify NO
+set ssl profile ssl_profile_service_svc14 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_service_svc14 -insertionEncoding UTF-8
+set ssl profile ssl_profile_service_svc14 -pushFlag 1
+set ssl profile ssl_profile_service_svc14 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_service_svc14 -pushEncTriggerTimeout 2
+
+set ssl profile ssl_profile_service_svc14  -eRSA DISABLED -sessReuse ENABLED -sessTimeout 300
+
+
+set ssl service svc14 -sslprofile ssl_profile_service_svc14
+set ssl service svc13 -sslprofile ssl_profile_service_svc14
+
+add ssl profile ssl_profile_service_svc12 -sslProfileType BackEnd
+
+unbind ssl profile ssl_profile_service_svc12 -cipherName DEFAULT_BACKEND
+
+set ssl profile ssl_profile_service_svc12 -denySSLReneg NO
+set ssl profile ssl_profile_service_svc12 -quantumSize 16384
+set ssl profile ssl_profile_service_svc12 -sslTriggerTimeout 150
+set ssl profile ssl_profile_service_svc12 -sendCloseNotify NO
+set ssl profile ssl_profile_service_svc12 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_service_svc12 -insertionEncoding UTF-8
+set ssl profile ssl_profile_service_svc12 -pushFlag 1
+set ssl profile ssl_profile_service_svc12 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_service_svc12 -pushEncTriggerTimeout 2
+
+set ssl profile ssl_profile_service_svc12  -eRSA DISABLED -sessReuse ENABLED -sessTimeout 100 -tls1 DISABLED -tls11 DISABLED -SNIEnable ENABLED -serverAuth ENABLED -commonName abc.com -sendCloseNotify NO
+
+bind ssl profile ssl_profile_service_svc12 -cipherName DEFAULT_BACKEND
+bind ssl profile ssl_profile_service_svc12 -cipherName cg1
+bind ssl profile ssl_profile_service_svc12 -cipherName TLS1-ECDHE-RSA-AES128-SHA
+bind ssl profile ssl_profile_service_svc12 -cipherName TLS1.2-ECDHE-RSA-AES128-GCM-SHA256
+
+set ssl service svc12 -sslprofile ssl_profile_service_svc12
+
+add ssl profile ssl_profile_service_svc11 -sslProfileType BackEnd
+
+unbind ssl profile ssl_profile_service_svc11 -cipherName DEFAULT_BACKEND
+
+set ssl profile ssl_profile_service_svc11 -denySSLReneg NO
+set ssl profile ssl_profile_service_svc11 -quantumSize 16384
+set ssl profile ssl_profile_service_svc11 -sslTriggerTimeout 150
+set ssl profile ssl_profile_service_svc11 -sendCloseNotify NO
+set ssl profile ssl_profile_service_svc11 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_service_svc11 -insertionEncoding UTF-8
+set ssl profile ssl_profile_service_svc11 -pushFlag 1
+set ssl profile ssl_profile_service_svc11 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_service_svc11 -pushEncTriggerTimeout 2
+
+set ssl profile ssl_profile_service_svc11  -eRSA DISABLED -sessReuse ENABLED -sessTimeout 100 -tls1 DISABLED -tls11 DISABLED -SNIEnable ENABLED -serverAuth ENABLED -commonName abc.com -sendCloseNotify NO
+
+bind ssl profile ssl_profile_service_svc11 -cipherName cg1
+bind ssl profile ssl_profile_service_svc11 -cipherName cg2
+
+set ssl service svc11 -sslprofile ssl_profile_service_svc11
+
+################################################ THE SSL SERVICE WITH LEGACY PROFILE BLOCK ENDS HERE #######################################################
+
+
+################ THIS BLOCK IS TO CREATE,MODIFY AND SET SAME SSL PROFILE ON SSL SERVICEGROUP HAVING LEGACY SSL PROFILE WITH SAME SETTINGS ###############
+
+
+add ssl profile ssl_profile_serviceGroup_sg14 -sslProfileType BackEnd
+
+set ssl profile ssl_profile_serviceGroup_sg14 -denySSLReneg NO
+set ssl profile ssl_profile_serviceGroup_sg14 -quantumSize 16384
+set ssl profile ssl_profile_serviceGroup_sg14 -sslTriggerTimeout 150
+set ssl profile ssl_profile_serviceGroup_sg14 -sendCloseNotify NO
+set ssl profile ssl_profile_serviceGroup_sg14 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_serviceGroup_sg14 -insertionEncoding UTF-8
+set ssl profile ssl_profile_serviceGroup_sg14 -pushFlag 1
+set ssl profile ssl_profile_serviceGroup_sg14 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_serviceGroup_sg14 -pushEncTriggerTimeout 2
+
+set ssl profile ssl_profile_serviceGroup_sg14  -eRSA DISABLED -sessReuse ENABLED -sessTimeout 300 -strictCAChecks YES
+
+
+set ssl serviceGroup sg14 -sslprofile ssl_profile_serviceGroup_sg14
+set ssl serviceGroup sg13 -sslprofile ssl_profile_serviceGroup_sg14
+
+add ssl profile ssl_profile_serviceGroup_sg12 -sslProfileType BackEnd
+
+unbind ssl profile ssl_profile_serviceGroup_sg12 -cipherName DEFAULT_BACKEND
+
+set ssl profile ssl_profile_serviceGroup_sg12 -denySSLReneg NO
+set ssl profile ssl_profile_serviceGroup_sg12 -quantumSize 16384
+set ssl profile ssl_profile_serviceGroup_sg12 -sslTriggerTimeout 150
+set ssl profile ssl_profile_serviceGroup_sg12 -sendCloseNotify NO
+set ssl profile ssl_profile_serviceGroup_sg12 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_serviceGroup_sg12 -insertionEncoding UTF-8
+set ssl profile ssl_profile_serviceGroup_sg12 -pushFlag 1
+set ssl profile ssl_profile_serviceGroup_sg12 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_serviceGroup_sg12 -pushEncTriggerTimeout 2
+
+set ssl profile ssl_profile_serviceGroup_sg12  -eRSA DISABLED -sessReuse ENABLED -sessTimeout 100 -tls1 DISABLED -tls11 DISABLED -SNIEnable ENABLED -serverAuth ENABLED -commonName abc.com -sendCloseNotify NO
+
+bind ssl profile ssl_profile_serviceGroup_sg12 -cipherName DEFAULT_BACKEND
+bind ssl profile ssl_profile_serviceGroup_sg12 -cipherName cg1
+bind ssl profile ssl_profile_serviceGroup_sg12 -cipherName TLS1.2-ECDHE-RSA-AES128-GCM-SHA256
+bind ssl profile ssl_profile_serviceGroup_sg12 -cipherName TLS1-ECDHE-RSA-AES128-SHA
+
+set ssl serviceGroup sg12 -sslprofile ssl_profile_serviceGroup_sg12
+
+add ssl profile ssl_profile_serviceGroup_sg11 -sslProfileType BackEnd
+
+unbind ssl profile ssl_profile_serviceGroup_sg11 -cipherName DEFAULT_BACKEND
+
+set ssl profile ssl_profile_serviceGroup_sg11 -denySSLReneg NO
+set ssl profile ssl_profile_serviceGroup_sg11 -quantumSize 16384
+set ssl profile ssl_profile_serviceGroup_sg11 -sslTriggerTimeout 150
+set ssl profile ssl_profile_serviceGroup_sg11 -sendCloseNotify NO
+set ssl profile ssl_profile_serviceGroup_sg11 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_serviceGroup_sg11 -insertionEncoding UTF-8
+set ssl profile ssl_profile_serviceGroup_sg11 -pushFlag 1
+set ssl profile ssl_profile_serviceGroup_sg11 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_serviceGroup_sg11 -pushEncTriggerTimeout 2
+
+set ssl profile ssl_profile_serviceGroup_sg11  -eRSA DISABLED -sessReuse ENABLED -sessTimeout 100 -tls1 DISABLED -tls11 DISABLED -SNIEnable ENABLED -serverAuth ENABLED -commonName abc.com -sendCloseNotify NO
+
+bind ssl profile ssl_profile_serviceGroup_sg11 -cipherName DEFAULT_BACKEND
+bind ssl profile ssl_profile_serviceGroup_sg11 -cipherName cg1
+bind ssl profile ssl_profile_serviceGroup_sg11 -cipherName cg2
+
+set ssl serviceGroup sg11 -sslprofile ssl_profile_serviceGroup_sg11
+
+###################################### THE SSL SERVICEGROUP WITH LEGACY PROFILE BLOCK ENDS HERE #############################################
+
+
+#################### THIS BLOCK IS TO CREATE,MODIFY AND SET SAME SSL PROFILE ON SSL INTERNAL SERVICE HAVING LEGACY SSL PROFILE WITH SAME SETTINGS ###################
+
+add ssl profile ssl_profile_intSvc_nshttps-::1l-443
+
+unbind ssl profile ssl_profile_intSvc_nshttps-::1l-443 -cipherName DEFAULT
+
+set ssl profile ssl_profile_intSvc_nshttps-::1l-443 -denySSLReneg NO
+set ssl profile ssl_profile_intSvc_nshttps-::1l-443 -quantumSize 16384
+set ssl profile ssl_profile_intSvc_nshttps-::1l-443 -sslTriggerTimeout 150
+set ssl profile ssl_profile_intSvc_nshttps-::1l-443 -sendCloseNotify NO
+set ssl profile ssl_profile_intSvc_nshttps-::1l-443 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_intSvc_nshttps-::1l-443 -insertionEncoding UTF-8
+set ssl profile ssl_profile_intSvc_nshttps-::1l-443 -pushFlag 1
+set ssl profile ssl_profile_intSvc_nshttps-::1l-443 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_intSvc_nshttps-::1l-443 -pushEncTriggerTimeout 2
+
+set ssl profile ssl_profile_intSvc_nshttps-::1l-443  -sessReuse DISABLED -tls1 DISABLED -tls11 DISABLED -sendCloseNotify NO
+
+bind ssl profile ssl_profile_intSvc_nshttps-::1l-443 -cipherName cg1
+bind ssl profile ssl_profile_intSvc_nshttps-::1l-443 -cipherName cg2
+
+set ssl service nshttps-::1l-443 -sslprofile ssl_profile_intSvc_nshttps-::1l-443
+
+################################################ THE SSL INTERNAL SERVICE WITH LEGACY PROFILE BLOCK ENDS HERE #######################################################
+
+
+########## THIS BLOCK IS TO CREATE,MODIFY AND SET SAME SSL PROFILE ON SSL SERVICE TRANSPARENT HAVING LEGACY SSL PROFILE WITH SAME SETTINGS ###########
+
+add ssl profile ssl_profile_service_trans_svc14
+
+unbind ssl profile ssl_profile_service_trans_svc14 -eccCurveName ALL
+
+set ssl profile ssl_profile_transparent_trans_svc14 -denySSLReneg NO
+set ssl profile ssl_profile_transparent_trans_svc14 -quantumSize 16384
+set ssl profile ssl_profile_transparent_trans_svc14 -sslTriggerTimeout 150
+set ssl profile ssl_profile_transparent_trans_svc14 -sendCloseNotify NO
+set ssl profile ssl_profile_transparent_trans_svc14 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_transparent_trans_svc14 -insertionEncoding UTF-8
+set ssl profile ssl_profile_transparent_trans_svc14 -pushFlag 1
+set ssl profile ssl_profile_transparent_trans_svc14 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_transparent_trans_svc14 -pushEncTriggerTimeout 2
+
+set ssl profile ssl_profile_transparent_trans_svc14  -sessReuse ENABLED -sessTimeout 120
+
+
+set ssl service trans_svc14 -sslprofile ssl_profile_transparent_trans_svc14
+
+add ssl profile ssl_profile_service_trans_svc13
+set ssl profile ssl_profile_transparent_trans_svc13 -denySSLReneg NO
+set ssl profile ssl_profile_transparent_trans_svc13 -quantumSize 16384
+set ssl profile ssl_profile_transparent_trans_svc13 -sslTriggerTimeout 150
+set ssl profile ssl_profile_transparent_trans_svc13 -sendCloseNotify NO
+set ssl profile ssl_profile_transparent_trans_svc13 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_transparent_trans_svc13 -insertionEncoding UTF-8
+set ssl profile ssl_profile_transparent_trans_svc13 -pushFlag 1
+set ssl profile ssl_profile_transparent_trans_svc13 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_transparent_trans_svc13 -pushEncTriggerTimeout 2
+
+set ssl profile ssl_profile_transparent_trans_svc13  -sessReuse ENABLED -sessTimeout 120
+
+
+set ssl service trans_svc13 -sslprofile ssl_profile_transparent_trans_svc13
+
+add ssl profile ssl_profile_service_trans_svc12
+
+unbind ssl profile ssl_profile_service_trans_svc12 -cipherName DEFAULT
+
+set ssl profile ssl_profile_transparent_trans_svc12 -denySSLReneg NO
+set ssl profile ssl_profile_transparent_trans_svc12 -quantumSize 16384
+set ssl profile ssl_profile_transparent_trans_svc12 -sslTriggerTimeout 150
+set ssl profile ssl_profile_transparent_trans_svc12 -sendCloseNotify NO
+set ssl profile ssl_profile_transparent_trans_svc12 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_transparent_trans_svc12 -insertionEncoding UTF-8
+set ssl profile ssl_profile_transparent_trans_svc12 -pushFlag 1
+set ssl profile ssl_profile_transparent_trans_svc12 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_transparent_trans_svc12 -pushEncTriggerTimeout 2
+
+set ssl profile ssl_profile_transparent_trans_svc12  -dhCount 1000 -dh ENABLED -dhFile "certs/dh/dh2048.pem" -eRSA ENABLED -eRSACount 1000 -sessReuse ENABLED -sessTimeout 200 -cipherRedirect ENABLED -clientAuth ENABLED -clientCert Optional -sslRedirect ENABLED -tls1 DISABLED -tls11 DISABLED -tls13 ENABLED -SNIEnable ENABLED -ocspStapling ENABLED -pushEncTrigger Ignore -sendCloseNotify NO
+
+bind ssl profile ssl_profile_transparent_trans_svc12 -cipherName cg1
+
+set ssl service trans_svc12 -sslprofile ssl_profile_transparent_trans_svc12
+
+add ssl profile ssl_profile_service_trans_svc11
+
+unbind ssl profile ssl_profile_service_trans_svc11 -cipherName DEFAULT
+
+set ssl profile ssl_profile_transparent_trans_svc11 -denySSLReneg NO
+set ssl profile ssl_profile_transparent_trans_svc11 -quantumSize 16384
+set ssl profile ssl_profile_transparent_trans_svc11 -sslTriggerTimeout 150
+set ssl profile ssl_profile_transparent_trans_svc11 -sendCloseNotify NO
+set ssl profile ssl_profile_transparent_trans_svc11 -encryptTriggerPktCount 35
+set ssl profile ssl_profile_transparent_trans_svc11 -insertionEncoding UTF-8
+set ssl profile ssl_profile_transparent_trans_svc11 -pushFlag 1
+set ssl profile ssl_profile_transparent_trans_svc11 -SNIHTTPHostMatch STRICT
+set ssl profile ssl_profile_transparent_trans_svc11 -pushEncTriggerTimeout 2
+
+set ssl profile ssl_profile_transparent_trans_svc11  -dhCount 1000 -dh ENABLED -dhFile "certs/dh/dh2048.pem" -eRSA ENABLED -eRSACount 1000 -sessReuse ENABLED -sessTimeout 200 -cipherRedirect ENABLED -clientAuth ENABLED -clientCert Optional -sslRedirect ENABLED -tls1 DISABLED -tls11 DISABLED -tls13 ENABLED -SNIEnable ENABLED -ocspStapling ENABLED -pushEncTrigger Ignore -sendCloseNotify NO
+
+bind ssl profile ssl_profile_transparent_trans_svc11 -cipherName DEFAULT
+bind ssl profile ssl_profile_transparent_trans_svc11 -cipherName cg1
+bind ssl profile ssl_profile_transparent_trans_svc11 -cipherName TLS1.2-ECDHE-RSA-AES128-GCM-SHA256
+
+set ssl service trans_svc11 -sslprofile ssl_profile_transparent_trans_svc11
+
+###################################### THE SSL SERVICE TRANSPARENT WITH LEGACY PROFILE BLOCK ENDS HERE #############################################
+
